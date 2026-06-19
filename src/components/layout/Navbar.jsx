@@ -1,0 +1,392 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+
+// ─── Dropdown data ────────────────────────────────────────────────────────────
+const SERVICES_ITEMS = [
+  { label: 'Ocean Freight', href: '#' },
+  { label: 'Air Freight', href: '#' },
+  { label: 'Land Freight', href: '#' },
+  { label: 'Customs Clearance', href: '#' },
+  { label: 'Warehousing', href: '#' },
+  { label: 'Project Cargo', href: '#' },
+];
+
+const PENTAKUHL_ITEMS = [
+  { label: 'Parcel Shippers', href: '#' },
+  { label: 'Pallet Shippers', href: '#' },
+];
+
+// ─── Dropdown Component ───────────────────────────────────────────────────────
+function DropdownMenu({ items, isOpen }) {
+  return (
+    <div
+      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-52 bg-white shadow-xl border border-gray-100 z-50 transition-all duration-200 origin-top ${
+        isOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-95 pointer-events-none'
+      }`}
+    >
+      {items.map((item) => (
+        <a
+          key={item.label}
+          href={item.href}
+          className="block px-5 py-3 text-[13px] font-medium text-gray-700 hover:text-[#f06c30] hover:bg-orange-50 border-b border-gray-50 last:border-0 transition-colors duration-150"
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// ─── Main Navbar ──────────────────────────────────────────────────────────────
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [pentakuhlOpen, setPentakuhlOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobilePentakuhlOpen, setMobilePentakuhlOpen] = useState(false);
+
+  const location = useLocation();
+  const servicesRef = useRef(null);
+  const pentakuhlRef = useRef(null);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (servicesRef.current && !servicesRef.current.contains(e.target)) {
+        setServicesOpen(false);
+      }
+      if (pentakuhlRef.current && !pentakuhlRef.current.contains(e.target)) {
+        setPentakuhlOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  const isActive = (path) => location.pathname === path;
+
+  const activeCls = 'text-[#f06c30] font-semibold';
+  const linkCls = 'text-[13.5px] font-medium text-gray-800 uppercase tracking-wide transition-colors duration-200 hover:text-[#f06c30] whitespace-nowrap';
+
+  return (
+    <>
+      {/* ── Desktop Navbar ─────────────────────────────────────────────── */}
+      <header className="w-full bg-white shadow-sm z-40 relative">
+        <nav className="max-w-7xl mx-auto px-6 h-[64px] flex items-center justify-center">
+
+          {/* Centered nav links */}
+          <ul className="hidden lg:flex items-center gap-8 xl:gap-10">
+
+            {/* HOME */}
+            <li>
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) =>
+                  `${linkCls} ${isActive ? activeCls : ''}`
+                }
+              >
+                Home
+              </NavLink>
+            </li>
+
+            {/* ABOUT US */}
+            <li>
+              <a href="#" className={linkCls}>About Us</a>
+            </li>
+
+            {/* SERVICES (dropdown) */}
+            <li className="relative" ref={servicesRef}>
+              <button
+                className={`${linkCls} flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0`}
+                onMouseEnter={() => setServicesOpen(true)}
+                onMouseLeave={() => setServicesOpen(false)}
+                onClick={() => setServicesOpen((o) => !o)}
+                aria-haspopup="true"
+                aria-expanded={servicesOpen}
+              >
+                Services
+                <svg
+                  className={`w-3 h-3 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div
+                onMouseEnter={() => setServicesOpen(true)}
+                onMouseLeave={() => setServicesOpen(false)}
+              >
+                <DropdownMenu items={SERVICES_ITEMS} isOpen={servicesOpen} />
+              </div>
+            </li>
+
+            {/* PENTAKUHL (dropdown, special branding) */}
+            <li 
+              className="relative flex items-center gap-1" 
+              ref={pentakuhlRef}
+              onMouseEnter={() => setPentakuhlOpen(true)}
+              onMouseLeave={() => setPentakuhlOpen(false)}
+            >
+              <NavLink
+                to="/pentakuhl"
+                className={({ isActive }) =>
+                  `flex items-baseline gap-0 whitespace-nowrap leading-none transition-opacity ${isActive ? 'opacity-100' : ''}`
+                }
+              >
+                <span className={`font-bold text-[13.5px] uppercase tracking-wide ${isActive('/pentakuhl') ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'} transition-colors`}>
+                  Penta
+                </span>
+                <span className="font-bold text-[13.5px] uppercase tracking-wide text-[#00bcd4]">
+                  KÜHL
+                </span>
+              </NavLink>
+              <button
+                className={`bg-transparent border-0 cursor-pointer p-0 flex items-center justify-center`}
+                onClick={() => setPentakuhlOpen((o) => !o)}
+                aria-haspopup="true"
+                aria-expanded={pentakuhlOpen}
+              >
+                <svg
+                  className={`w-3 h-3 transition-transform duration-200 text-gray-800 ${pentakuhlOpen ? 'rotate-180' : ''}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div
+                onMouseEnter={() => setPentakuhlOpen(true)}
+                onMouseLeave={() => setPentakuhlOpen(false)}
+              >
+                <DropdownMenu items={PENTAKUHL_ITEMS} isOpen={pentakuhlOpen} />
+              </div>
+            </li>
+
+            {/* INDUSTRIES */}
+            <li>
+              <NavLink
+                to="/industries"
+                className={({ isActive }) =>
+                  `${linkCls} ${isActive ? activeCls : ''}`
+                }
+              >
+                Industries
+              </NavLink>
+            </li>
+
+            {/* CAREERS */}
+            <li>
+              <a href="#" className={linkCls}>Careers</a>
+            </li>
+
+            {/* CONTACT */}
+            <li>
+              <a href="#" className={linkCls}>Contact</a>
+            </li>
+
+          </ul>
+
+          {/* Mobile top bar */}
+          <div className="flex lg:hidden w-full items-center justify-between">
+            {/* Orange Contact Button */}
+            <a
+              href="#"
+              className="inline-flex items-center justify-center px-5 py-2 text-[13px] font-semibold text-white bg-[#f06c30] hover:bg-[#e05c20] rounded-md transition-colors duration-200"
+            >
+              Contact
+            </a>
+
+            {/* Hamburger / Close toggle */}
+            <button
+              onClick={() => setMobileOpen((o) => !o)}
+              className="p-2 text-gray-800 focus:outline-none"
+              aria-label="Toggle navigation"
+            >
+              {mobileOpen ? (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
+
+        </nav>
+      </header>
+
+      {/* ── Mobile Overlay ─────────────────────────────────────────────── */}
+      <div
+        className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 lg:hidden ${
+          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileOpen(false)}
+      />
+
+      {/* ── Mobile Slide-in Menu ────────────────────────────────────────── */}
+      <aside
+        className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-white z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {/* Mobile menu top bar */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <a
+            href="#"
+            className="inline-flex items-center justify-center px-5 py-2 text-[13px] font-semibold text-white bg-[#f06c30] hover:bg-[#e05c20] rounded-md transition-colors duration-200"
+          >
+            Contact
+          </a>
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="p-1 text-gray-700 hover:text-gray-900"
+            aria-label="Close menu"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Nav Links */}
+        <nav className="flex-1 overflow-y-auto">
+          <ul className="divide-y divide-gray-100">
+            <li>
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) =>
+                  `flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide transition-colors ${
+                    isActive ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'
+                  }`
+                }
+              >
+                Home
+              </NavLink>
+            </li>
+
+            <li>
+              <a href="#" className="flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
+                About Us
+              </a>
+            </li>
+
+            {/* Services with sub-menu */}
+            <li>
+              <button
+                className="w-full flex items-center justify-between px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors"
+                onClick={() => setMobileServicesOpen((o) => !o)}
+              >
+                Services
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-90' : ''}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              {mobileServicesOpen && (
+                <ul className="bg-gray-50 border-t border-gray-100">
+                  {SERVICES_ITEMS.map((item) => (
+                    <li key={item.label}>
+                      <a href={item.href} className="block px-10 py-3 text-[13px] text-gray-700 hover:text-[#f06c30] transition-colors">
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+
+            {/* PentaKÜHL with sub-menu */}
+            <li>
+              <button
+                className="w-full flex items-center justify-between px-6 py-4 transition-colors hover:text-[#f06c30]"
+                onClick={() => setMobilePentakuhlOpen((o) => !o)}
+              >
+                <span className="flex items-baseline gap-0">
+                  <span className={`text-[14px] font-semibold uppercase tracking-wide ${isActive('/pentakuhl') ? 'text-[#f06c30]' : 'text-gray-800'}`}>Penta</span>
+                  <span className="text-[14px] font-semibold uppercase tracking-wide text-[#00bcd4]">KÜHL</span>
+                </span>
+                <svg
+                  className={`w-4 h-4 transition-transform duration-200 text-gray-800 ${mobilePentakuhlOpen ? 'rotate-90' : ''}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              {mobilePentakuhlOpen && (
+                <ul className="bg-gray-50 border-t border-gray-100">
+                  {PENTAKUHL_ITEMS.map((item) => (
+                    <li key={item.label}>
+                      <a href={item.href} className="block px-10 py-3 text-[13px] text-gray-700 hover:text-[#f06c30] transition-colors">
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+
+            <li>
+              <NavLink
+                to="/industries"
+                className={({ isActive }) =>
+                  `flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide transition-colors ${
+                    isActive ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'
+                  }`
+                }
+              >
+                Industries
+              </NavLink>
+            </li>
+
+            <li>
+              <a href="#" className="flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
+                Careers
+              </a>
+            </li>
+
+            <li>
+              <a href="#" className="flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
+                Contact
+              </a>
+            </li>
+          </ul>
+
+          {/* Contact Info */}
+          <div className="px-6 pt-8 pb-6 border-t border-gray-100 mt-2">
+            <h4 className="text-[15px] font-bold text-gray-900 mb-4">Contact Info</h4>
+            <a
+              href="tel:+912262226222"
+              className="block text-[13.5px] text-gray-700 underline underline-offset-2 hover:text-[#f06c30] mb-3 transition-colors"
+            >
+              +91 22-6222-6222
+            </a>
+            <a
+              href="https://maps.google.com/?q=902,+A+Wing,+Times+Square,+Andheri-Kurla+Road,+Marol,+Andheri+East,+Mumbai+400+059"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-[13.5px] text-gray-700 underline underline-offset-2 hover:text-[#f06c30] leading-relaxed transition-colors"
+            >
+              902, 'A' Wing, Times Square, Andheri-Kurla Road, Marol, Andheri (East), Mumbai 400 059
+            </a>
+          </div>
+        </nav>
+      </aside>
+    </>
+  );
+}
