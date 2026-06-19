@@ -162,11 +162,11 @@ export default function Industries() {
 
     // ── CTA Banner Cinematic Parallax ───────────────────────────────────────
     if (ctaBgRef.current && ctaTextRef.current) {
-      // 1. Background image slow scrub parallax (0 to -120px)
+      // Background image slides downward (slower than scroll) to create deep background parallax
       gsap.fromTo(ctaBgRef.current, 
-        { y: 0 },
+        { y: -120 },
         {
-          y: -120,
+          y: 120,
           ease: "none",
           scrollTrigger: {
             trigger: "#cta-banner",
@@ -177,35 +177,17 @@ export default function Industries() {
         }
       );
 
-      // 2. Continuous floating for the content wrapper (+80px to -80px)
+      // Content layer slides upward (faster than scroll) to create premium foreground offset
       gsap.fromTo(ctaTextRef.current,
-        { y: 80 },
+        { y: 60 },
         {
-          y: -80,
+          y: -60,
           ease: "none",
           scrollTrigger: {
             trigger: "#cta-banner",
             start: "top bottom",
             end: "bottom top",
             scrub: true
-          }
-        }
-      );
-
-      // 3. Staggered scale and fade-in for the heading, paragraph, and button
-      gsap.fromTo(ctaTextRef.current.children,
-        { opacity: 0, scale: 0.96, y: 30 },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: "#cta-banner",
-            start: "top 85%",
-            end: "top 35%", // Completes fade in relatively quickly during scroll
-            scrub: 1 // smooth scrubbing
           }
         }
       );
