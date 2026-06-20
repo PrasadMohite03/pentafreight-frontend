@@ -67,8 +67,15 @@ export default function GlobalFootprintSection() {
 
       {/* ── Background Line Pattern Overlay ───────────────────────── */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.12] pointer-events-none z-0"
-        style={{ backgroundImage: `url(${bgPattern})` }}
+        className="absolute inset-0 pointer-events-none z-0 "
+        style={{ 
+          backgroundImage: `url(${bgPattern})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.4,
+          filter: 'invert(1)' 
+        }}
         aria-hidden="true"
       />
 

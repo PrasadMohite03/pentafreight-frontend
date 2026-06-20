@@ -7,8 +7,15 @@ export default function PhilosophySection() {
       className="relative w-full py-12 md:py-16 flex items-center justify-center overflow-hidden bg-[#425462]"
     >
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.12] pointer-events-none z-0"
-        style={{ backgroundImage: `url(${bgPattern})` }}
+        className="absolute inset-0 pointer-events-none z-0 "
+        style={{ 
+          backgroundImage: `url(${bgPattern})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.4,
+          filter: 'invert(1)' 
+        }}
         aria-hidden="true"
       />
       
