@@ -124,7 +124,6 @@ export default function OfficeLocationsSection() {
             </p>
           </div>
 
-          {/* Row 2, Col 2: Delhi */}
           <div className="flex flex-col justify-start">
             <h3 className="text-gray-900 font-semibold text-[19px] sm:text-[20px] lg:text-[21px] mb-2 leading-tight">
               {indiaOffices[4].city}

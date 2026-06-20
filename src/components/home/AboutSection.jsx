@@ -15,8 +15,7 @@ export default function AboutSection() {
   return (
     <section
       id="about-section"
-      className="relative w-full overflow-hidden bg-[#f6f2ee]"
-      style={{ height: '100vh', minHeight: '520px' }}
+      className="relative w-full overflow-hidden bg-[#f6f2ee] h-[75vh] md:h-screen min-h-[500px] md:min-h-[520px]"
     >
       {/* ── Layer 1: Airplane — fills entire section ───────────────────────── */}
       <img
@@ -25,25 +24,28 @@ export default function AboutSection() {
         className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
       />
 
-      {/* ── Layer 2: Fade overlay (blank image) — top portion only ────────── */}
+      {/* ── Layer 2: Fade overlay — top portion only ────────── */}
       {/*
-        This image is a white/cream rectangle that fades to transparent at the
-        bottom. Placed at the top of the section it creates the smooth white→
-        airplane transition visible in the reference screenshot.
-        Height ~45% so the fade covers the text area and blends into the plane.
+        White vignette overlay at the top to ensure text readability without the orange tone.
       */}
       <img
         src={fadeImg}
         alt=""
         aria-hidden="true"
-        className="absolute top-0 left-0 w-full select-none pointer-events-none z-[2]"
-        style={{ height: '55%', objectFit: 'fill', objectPosition: 'top' }}
+        className="absolute top-0 left-0 w-full select-none pointer-events-none z-[2] opacity-60"
+        style={{ height: '45%', objectFit: 'fill', objectPosition: 'top' }}
+      />
+      <div 
+        className="absolute top-0 left-0 w-full select-none pointer-events-none z-[3]"
+        style={{ 
+          height: '50%', 
+          background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.95) 25%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0) 100%)' 
+        }}
       />
 
       {/* ── Layer 3: Text content ──────────────────────────────────────────── */}
       <div
         className="absolute top-0 left-0 w-full z-10 px-8 md:px-16 lg:px-20 pt-7 md:pt-10"
-        data-aos="fade-up"
       >
         {/*
           Desktop: Flex layout centered
@@ -53,25 +55,22 @@ export default function AboutSection() {
         */}
         <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-10 items-start justify-center">
 
-          {/* Left — Heading block */}
           <div className="w-full lg:w-auto flex flex-col items-center text-center pt-1">
-            <span className="text-[#f06c30] text-[11px] md:text-[12px] font-bold tracking-[0.3em] uppercase leading-none">
+            <span className="font-sans font-bold text-[14px] leading-[21px] tracking-[1.5px] text-[#F06C30] uppercase whitespace-nowrap">
               ABOUT US
             </span>
-            {/* Orange divider */}
-            <div className="w-[80px] h-[1.5px] bg-[#f06c30] my-[7px]" />
-            <span className="text-[#f06c30] text-[12px] md:text-[13px] lg:text-[14px] font-black tracking-[0.2em] uppercase whitespace-nowrap leading-none">
+            <div className="w-[130px] h-[2px] bg-[#F06C30] my-[6px]" />
+            <span className="font-sans font-bold text-[14px] leading-[21px] tracking-[1.5px] text-[#F06C30] uppercase whitespace-nowrap">
               PENTA FREIGHT
             </span>
           </div>
 
-          {/* Right — Description */}
           <div className="w-full lg:w-[60%]">
-            <p className="text-gray-800 text-[13px] md:text-[14px] lg:text-[15px] leading-relaxed font-normal">
+            <p className="font-sans font-light text-[20px] leading-[32px] tracking-[0px] text-[#425462]">
               Penta Freight provides reliable{' '}
-              <strong className="font-bold text-gray-900">logistics solutions</strong>
+              <strong className="font-bold text-[#1f2937]">logistics solutions</strong>
               , specializing in temperature-sensitive shipments. We ensure safe,{' '}
-              <strong className="font-bold text-gray-900">on-time delivery</strong>{' '}
+              <strong className="font-bold text-[#1f2937]">on-time delivery</strong>{' '}
               worldwide. Trust us for seamless supply chain management.
             </p>
           </div>

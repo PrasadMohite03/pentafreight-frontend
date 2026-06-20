@@ -61,24 +61,19 @@ export default function GlobalFootprintSection() {
   return (
     <section 
       id="global-footprint-section"
-      className="relative w-full py-20 lg:py-28 overflow-hidden bg-[#41515c] border-t border-b border-gray-700"
+      className="relative w-full py-20 lg:py-28 overflow-hidden bg-[#425462] border-t border-b border-gray-700"
     >
       <style dangerouslySetInnerHTML={{ __html: pulseStyle }} />
 
       {/* ── Background Line Pattern Overlay ───────────────────────── */}
       <div 
-        className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
-        style={{ 
-          backgroundImage: `url(${bgPattern})`, 
-          backgroundSize: 'cover', 
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.12] pointer-events-none z-0"
+        style={{ backgroundImage: `url(${bgPattern})` }}
         aria-hidden="true"
       />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 lg:px-24 xl:px-28 flex flex-col items-center">
-        <h2 className="text-[#f06c30] text-[32px] md:text-[38px] font-semibold mb-12 tracking-wide text-center">
+        <h2 className="text-[#FF7A3D] text-[32px] md:text-[38px] font-semibold mb-12 tracking-wide text-center">
           Our Global Footprint
         </h2>
 
@@ -98,10 +93,8 @@ export default function GlobalFootprintSection() {
                 className="absolute"
                 style={{ left: pin.left, top: pin.top }}
               >
-                {/* Center dot */}
                 <div className={`w-1.5 h-1.5 rounded-full bg-[#f06c30] absolute -translate-x-1/2 -translate-y-1/2 z-30 ${pin.isHub ? 'scale-125 bg-orange-600' : ''}`} />
                 
-                {/* Pulsing ring 1 */}
                 <div className={`pin-pulsing-ring ${pin.isHub ? 'w-8 h-8 border-[3px] border-orange-600' : 'w-6 h-6'}`} />
                 
                 {/* Pulsing ring 2 (delayed) */}

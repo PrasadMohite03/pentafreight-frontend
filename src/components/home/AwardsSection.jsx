@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import logo1 from '../../assets/images/homepage/Penta Freight Home/imgi_25_.png';
 import logo2 from '../../assets/images/homepage/Penta Freight Home/imgi_26_.png';
 import logo3 from '../../assets/images/homepage/Penta Freight Home/imgi_27_.png';
@@ -69,6 +69,31 @@ const awardsData = [
 ];
 
 export default function AwardsSection() {
+  const gridRef = useRef(null);
+  const cardRefs = useRef([]);
+  const [highlight, setHighlight] = useState({ x: 0, y: 0, w: 0, h: 0, visible: false });
+
+  const handleCardEnter = useCallback((index) => {
+    const grid = gridRef.current;
+    const card = cardRefs.current[index];
+    if (!grid || !card) return;
+
+    const gridRect = grid.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+
+    setHighlight({
+      x: cardRect.left - gridRect.left,
+      y: cardRect.top - gridRect.top,
+      w: cardRect.width,
+      h: cardRect.height,
+      visible: true,
+    });
+  }, []);
+
+  const handleGridLeave = useCallback(() => {
+    setHighlight((prev) => ({ ...prev, visible: false }));
+  }, []);
+
   return (
     <section id="awards-section" className="w-full bg-[#f8f9fa] border-t border-gray-200 py-16 lg:py-24">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-12 xl:px-14">
@@ -89,16 +114,34 @@ export default function AwardsSection() {
         </div>
 
         {/* ── Cards Grid ───────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch">
-          {awardsData.map((award, index) => (
-            <div 
-              key={index}
-              className="relative group bg-white rounded-[20px] shadow-[0_8px_30px_rgba(0,0,0,0.02)] border border-gray-100 p-6 sm:p-8 flex flex-col items-center justify-between text-center transition-all duration-[350ms] ease-out hover:scale-[1.04] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] z-10 hover:z-20 cursor-pointer"
-            >
-              {/* Layout-Safe Hover Border Frame Overlay */}
-              <div className="absolute inset-0 border-[6px] border-[#41515c] rounded-[20px] opacity-0 group-hover:opacity-100 transition-opacity duration-[350ms] ease-out pointer-events-none" />
+        <div
+          ref={gridRef}
+          onMouseLeave={handleGridLeave}
+          className="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch"
+        >
+          {/* ── Floating Highlight Tile ──────────────────────────── */}
+          <div
+            className="absolute pointer-events-none z-0 rounded-[24px]"
+            style={{
+              width: highlight.w + 16,
+              height: highlight.h + 16,
+              left: highlight.x - 8,
+              top: highlight.y - 8,
+              background: '#6b6b6b',
+              boxShadow: '0 16px 40px rgba(0, 0, 0, 0.12),',
+              opacity: highlight.visible ? 1 : 0,
+              transform: highlight.visible ? 'scale(1)' : 'scale(0.92)',
+              transition: 'left 400ms cubic-bezier(0.22, 1, 0.36, 1), top 400ms cubic-bezier(0.22, 1, 0.36, 1), width 400ms cubic-bezier(0.22, 1, 0.36, 1), height 400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease, transform 300ms ease',
+            }}
+          />
 
-              {/* Logo Area */}
+          {awardsData.map((award, index) => (
+            <div
+              key={index}
+              ref={(el) => (cardRefs.current[index] = el)}
+              onMouseEnter={() => handleCardEnter(index)}
+              className="relative z-10 bg-white rounded-[20px] shadow-[0_8px_30px_rgba(0,0,0,0.02)] border border-gray-100 p-6 sm:p-8 flex flex-col items-center justify-between text-center cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+            >
               <div className="h-16 w-full flex items-center justify-center mb-6">
                 <img 
                   src={award.logo} 
@@ -107,12 +150,11 @@ export default function AwardsSection() {
                 />
               </div>
 
-              {/* Award Lines */}
               <div className="w-full flex flex-col items-center mt-auto">
                 {award.text.split('\n').map((line, i) => (
                   <span 
-                    key={i} 
-                    className="block text-[12px] sm:text-[13px] text-gray-600 font-light leading-relaxed"
+                    key={i}
+                    className="block text-[12px] sm:text-[13px] text-gray-900 font-medium leading-relaxed"
                   >
                     {line}
                   </span>

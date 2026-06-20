@@ -12,27 +12,32 @@ const SERVICES_ITEMS = [
 ];
 
 const PENTAKUHL_ITEMS = [
-  { label: 'Parcel Shippers', href: '#' },
-  { label: 'Pallet Shippers', href: '#' },
+  { label: 'Parcel Shippers', href: '/pentakuhl/parcel-shippers' },
+  { label: 'Pallet Shippers', href: '/pentakuhl/pallet-shippers' },
 ];
 
 // ─── Dropdown Component ───────────────────────────────────────────────────────
 function DropdownMenu({ items, isOpen }) {
+  const location = useLocation();
   return (
     <div
-      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-52 bg-white shadow-xl border border-gray-100 z-50 transition-all duration-200 origin-top ${
-        isOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-95 pointer-events-none'
-      }`}
+      className={`absolute top-full left-1/2 -translate-x-1/2 mt-0 w-52 bg-white shadow-xl border border-gray-100 z-50 transition-all duration-200 origin-top ${isOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-95 pointer-events-none'
+        }`}
     >
-      {items.map((item) => (
-        <a
-          key={item.label}
-          href={item.href}
-          className="block px-5 py-3 text-[13px] font-medium text-gray-700 hover:text-[#f06c30] hover:bg-orange-50 border-b border-gray-50 last:border-0 transition-colors duration-150"
-        >
-          {item.label}
-        </a>
-      ))}
+      {items.map((item) => {
+        const isActive = location.pathname === item.href;
+        return (
+          <Link
+            key={item.label}
+            to={item.href}
+            className={`block px-5 py-3 text-[13px] font-medium border-b border-gray-50 last:border-0 transition-colors duration-150 ${
+              isActive ? 'text-[#f06c30] bg-orange-50/50' : 'text-gray-700 hover:text-[#f06c30] hover:bg-orange-50'
+            }`}
+          >
+            {item.label}
+          </Link>
+        );
+      })}
     </div>
   );
 }
@@ -63,9 +68,11 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Close mobile menu on route change
+  // Close all menus on route change
   useEffect(() => {
     setMobileOpen(false);
+    setServicesOpen(false);
+    setPentakuhlOpen(false);
   }, [location]);
 
   // Lock body scroll when mobile menu is open
@@ -74,42 +81,84 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  const isActive = (path) => location.pathname === path;
+  const [visible, setVisible] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-  const activeCls = 'text-[#f06c30] font-semibold';
-  const linkCls = 'text-[13.5px] font-medium text-gray-800 uppercase tracking-wide transition-colors duration-200 hover:text-[#f06c30] whitespace-nowrap';
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Scrolled state (for backdrop blur and soft shadow)
+      if (currentScrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+
+      // Hide/Show navbar on scroll direction change
+      if (currentScrollY <= 50) {
+        setVisible(true);
+      } else {
+        if (currentScrollY > lastScrollY) {
+          setVisible(false); // scrolling down
+        } else {
+          setVisible(true); // scrolling up
+        }
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  const isHomeActive = location.pathname === '/' && location.hash === '';
+  const isAboutActive = location.pathname === '/' && location.hash === '#about-section';
+  const isIndustriesActive = location.pathname === '/industries';
+  const isPentakuhlActive = location.pathname.startsWith('/pentakuhl');
+
+  const getLinkClass = (isActiveItem) => {
+    const base = 'font-sans text-[15px] font-semibold leading-[21px] tracking-[0px] uppercase transition-colors duration-200 hover:text-[#f06c30] whitespace-nowrap';
+    const color = isActiveItem ? 'text-[#f06c30]' : 'text-black';
+    return `${base} ${color}`;
+  };
+
+  const headerCls = `fixed top-0 left-0 w-full z-40 transition-all duration-300 ease-in-out ${visible ? 'translate-y-0' : '-translate-y-full'
+    } ${scrolled
+      ? 'bg-white/85 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.04)] border-b border-gray-100/50'
+      : 'bg-white shadow-sm'
+    }`;
+
+  const navHeightCls = `max-w-7xl mx-auto px-6 flex items-center justify-center transition-all duration-300 ease-in-out ${scrolled ? 'h-[52px]' : 'h-[64px]'
+    }`;
 
   return (
     <>
       {/* ── Desktop Navbar ─────────────────────────────────────────────── */}
-      <header className="w-full bg-white shadow-sm z-40 relative">
-        <nav className="max-w-7xl mx-auto px-6 h-[64px] flex items-center justify-center">
+      <header className={headerCls}>
+        <nav className={navHeightCls}>
 
-          {/* Centered nav links */}
           <ul className="hidden lg:flex items-center gap-8 xl:gap-10">
 
-            {/* HOME */}
             <li>
-              <NavLink
+              <Link
                 to="/"
-                end
-                className={({ isActive }) =>
-                  `${linkCls} ${isActive ? activeCls : ''}`
-                }
+                className={getLinkClass(isHomeActive)}
               >
                 Home
-              </NavLink>
+              </Link>
             </li>
 
-            {/* ABOUT US */}
             <li>
-              <a href="#" className={linkCls}>About Us</a>
+              <Link to="/#about-section" className={getLinkClass(isAboutActive)}>
+                About Us
+              </Link>
             </li>
 
-            {/* SERVICES (dropdown) */}
             <li className="relative" ref={servicesRef}>
               <button
-                className={`${linkCls} flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0`}
+                className={`${getLinkClass(false)} flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0`}
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
                 onClick={() => setServicesOpen((o) => !o)}
@@ -133,22 +182,22 @@ export default function Navbar() {
             </li>
 
             {/* PENTAKUHL (dropdown, special branding) */}
-            <li 
-              className="relative flex items-center gap-1" 
+            <li
+              className="relative flex items-center gap-1"
               ref={pentakuhlRef}
               onMouseEnter={() => setPentakuhlOpen(true)}
               onMouseLeave={() => setPentakuhlOpen(false)}
             >
               <NavLink
                 to="/pentakuhl"
-                className={({ isActive }) =>
-                  `flex items-baseline gap-0 whitespace-nowrap leading-none transition-opacity ${isActive ? 'opacity-100' : ''}`
+                className={() =>
+                  `flex items-baseline gap-0 whitespace-nowrap leading-none transition-opacity ${isPentakuhlActive ? 'opacity-100' : ''}`
                 }
               >
-                <span className={`font-bold text-[13.5px] uppercase tracking-wide ${isActive('/pentakuhl') ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'} transition-colors`}>
+                <span className="font-sans text-[15px] font-semibold leading-[21px] tracking-[0px] uppercase text-black hover:text-[#f06c30] transition-colors">
                   Penta
                 </span>
-                <span className="font-bold text-[13.5px] uppercase tracking-wide text-[#00bcd4]">
+                <span className="font-sans text-[15px] font-semibold leading-[21px] tracking-[0px] uppercase text-[#00bcd4] hover:text-[#f06c30] transition-colors">
                   KÜHL
                 </span>
               </NavLink>
@@ -173,33 +222,26 @@ export default function Navbar() {
               </div>
             </li>
 
-            {/* INDUSTRIES */}
             <li>
-              <NavLink
+              <Link
                 to="/industries"
-                className={({ isActive }) =>
-                  `${linkCls} ${isActive ? activeCls : ''}`
-                }
+                className={getLinkClass(isIndustriesActive)}
               >
                 Industries
-              </NavLink>
+              </Link>
             </li>
 
-            {/* CAREERS */}
             <li>
-              <a href="#" className={linkCls}>Careers</a>
+              <a href="#" className={getLinkClass(false)}>Careers</a>
             </li>
 
-            {/* CONTACT */}
             <li>
-              <a href="#" className={linkCls}>Contact</a>
+              <a href="#" className={getLinkClass(false)}>Contact</a>
             </li>
 
           </ul>
 
-          {/* Mobile top bar */}
           <div className="flex lg:hidden w-full items-center justify-between">
-            {/* Orange Contact Button */}
             <a
               href="#"
               className="inline-flex items-center justify-center px-5 py-2 text-[13px] font-semibold text-white bg-[#f06c30] hover:bg-[#e05c20] rounded-md transition-colors duration-200"
@@ -230,19 +272,16 @@ export default function Navbar() {
 
       {/* ── Mobile Overlay ─────────────────────────────────────────────── */}
       <div
-        className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 lg:hidden ${
-          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 lg:hidden ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
         onClick={() => setMobileOpen(false)}
       />
 
       {/* ── Mobile Slide-in Menu ────────────────────────────────────────── */}
       <aside
-        className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-white z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-white z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
-        {/* Mobile menu top bar */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <a
             href="#"
@@ -261,7 +300,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Nav Links */}
         <nav className="flex-1 overflow-y-auto">
           <ul className="divide-y divide-gray-100">
             <li>
@@ -269,8 +307,7 @@ export default function Navbar() {
                 to="/"
                 end
                 className={({ isActive }) =>
-                  `flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide transition-colors ${
-                    isActive ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'
+                  `flex items-center px-6 py-4 text-[15px] font-semibold uppercase tracking-wide transition-colors ${isActive ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'
                   }`
                 }
               >
@@ -279,15 +316,14 @@ export default function Navbar() {
             </li>
 
             <li>
-              <a href="#" className="flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
+              <a href="#" className="flex items-center px-6 py-4 text-[15px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
                 About Us
               </a>
             </li>
 
-            {/* Services with sub-menu */}
             <li>
               <button
-                className="w-full flex items-center justify-between px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors"
+                className="w-full flex items-center justify-between px-6 py-4 text-[15px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors"
                 onClick={() => setMobileServicesOpen((o) => !o)}
               >
                 Services
@@ -302,9 +338,9 @@ export default function Navbar() {
                 <ul className="bg-gray-50 border-t border-gray-100">
                   {SERVICES_ITEMS.map((item) => (
                     <li key={item.label}>
-                      <a href={item.href} className="block px-10 py-3 text-[13px] text-gray-700 hover:text-[#f06c30] transition-colors">
+                      <Link to={item.href} className="block px-10 py-3 text-[13px] text-gray-700 hover:text-[#f06c30] transition-colors">
                         {item.label}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -318,8 +354,8 @@ export default function Navbar() {
                 onClick={() => setMobilePentakuhlOpen((o) => !o)}
               >
                 <span className="flex items-baseline gap-0">
-                  <span className={`text-[14px] font-semibold uppercase tracking-wide ${isActive('/pentakuhl') ? 'text-[#f06c30]' : 'text-gray-800'}`}>Penta</span>
-                  <span className="text-[14px] font-semibold uppercase tracking-wide text-[#00bcd4]">KÜHL</span>
+                  <span className="text-[15px] font-semibold uppercase tracking-wide text-gray-800">Penta</span>
+                  <span className="text-[15px] font-semibold uppercase tracking-wide text-[#00bcd4]">KÜHL</span>
                 </span>
                 <svg
                   className={`w-4 h-4 transition-transform duration-200 text-gray-800 ${mobilePentakuhlOpen ? 'rotate-90' : ''}`}
@@ -332,9 +368,9 @@ export default function Navbar() {
                 <ul className="bg-gray-50 border-t border-gray-100">
                   {PENTAKUHL_ITEMS.map((item) => (
                     <li key={item.label}>
-                      <a href={item.href} className="block px-10 py-3 text-[13px] text-gray-700 hover:text-[#f06c30] transition-colors">
+                      <Link to={item.href} className="block px-10 py-3 text-[13px] text-gray-700 hover:text-[#f06c30] transition-colors">
                         {item.label}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -345,8 +381,7 @@ export default function Navbar() {
               <NavLink
                 to="/industries"
                 className={({ isActive }) =>
-                  `flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide transition-colors ${
-                    isActive ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'
+                  `flex items-center px-6 py-4 text-[15px] font-semibold uppercase tracking-wide transition-colors ${isActive ? 'text-[#f06c30]' : 'text-gray-800 hover:text-[#f06c30]'
                   }`
                 }
               >
@@ -355,19 +390,18 @@ export default function Navbar() {
             </li>
 
             <li>
-              <a href="#" className="flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
+              <a href="#" className="flex items-center px-6 py-4 text-[15px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
                 Careers
               </a>
             </li>
 
             <li>
-              <a href="#" className="flex items-center px-6 py-4 text-[14px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
+              <a href="#" className="flex items-center px-6 py-4 text-[15px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
                 Contact
               </a>
             </li>
           </ul>
 
-          {/* Contact Info */}
           <div className="px-6 pt-8 pb-6 border-t border-gray-100 mt-2">
             <h4 className="text-[15px] font-bold text-gray-900 mb-4">Contact Info</h4>
             <a
@@ -387,6 +421,8 @@ export default function Navbar() {
           </div>
         </nav>
       </aside>
+
+      <div className="h-[64px] w-full flex-shrink-0" />
     </>
   );
 }

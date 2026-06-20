@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo1 from '../../assets/images/homepage/Penta Freight Home/imgi_8_.png';
 import logo2 from '../../assets/images/homepage/Penta Freight Home/imgi_9_.png';
 import logo3 from '../../assets/images/homepage/Penta Freight Home/imgi_10_.png';
@@ -32,8 +32,7 @@ const testimonials = [
 
 function TestimonialCard({ item }) {
   return (
-    <div className="bg-white rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 p-5 sm:p-6 lg:p-7 flex flex-col items-center transition-all duration-300 hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1">
-      {/* Client Logo */}
+    <div className="bg-white rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 p-5 sm:p-6 lg:p-7 flex flex-col items-center transition-all duration-300 hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] hover:-translate-y-1 h-full">
       <div className="h-9 sm:h-10 flex items-center justify-center mb-4">
         <img 
           src={item.logo} 
@@ -41,11 +40,9 @@ function TestimonialCard({ item }) {
           className="h-full max-w-[180px] object-contain"
         />
       </div>
-      {/* Testimonial Quote */}
       <p className="text-gray-800 text-center text-[14px] sm:text-[14.5px] lg:text-[15px] leading-relaxed font-normal mb-5">
         {item.quote}
       </p>
-      {/* Author Info */}
       <div className="mt-auto flex flex-col items-center">
         <span className="font-semibold text-gray-950 text-[15px] sm:text-[16px] mb-1">
           {item.author}
@@ -59,6 +56,41 @@ function TestimonialCard({ item }) {
 }
 
 export default function ReviewsSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  const minSwipeDistance = 50;
+
+  const nextSlide = () => {
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevSlide = () => {
+    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
   return (
     <section id="reviews-section" className="w-full bg-[#f8f9fa] border-t border-b border-gray-200 mt-12 lg:mt-24">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-12 xl:px-14 py-20 lg:py-28">
@@ -85,21 +117,64 @@ export default function ReviewsSection() {
 
           {/* ── Right Column (Testimonial Cards) ────────────────────── */}
           <div className="lg:col-span-7 lg:col-start-6">
-            {/* Mobile Layout (Sequential 1, 2, 3, 4) */}
-            <div className="flex flex-col gap-8 md:hidden">
-              {testimonials.map((item, index) => (
-                <TestimonialCard key={index} item={item} />
-              ))}
+            
+            {/* Mobile/Tablet Slider Layout (Visible only on mobile/tablet) */}
+            <div className="block md:hidden">
+              <div 
+                className="relative w-full overflow-hidden"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
+                <div 
+                  className="flex transition-transform duration-500 ease-out"
+                  style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+                >
+                  {testimonials.map((item, index) => (
+                    <div key={index} className="w-full flex-shrink-0 px-2 box-border">
+                      <TestimonialCard item={item} />
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 border border-gray-250 shadow-sm flex items-center justify-center hover:bg-gray-100 active:scale-95 transition-all duration-200"
+                  aria-label="Previous testimonial"
+                >
+                  <svg className="w-5 h-5 text-[#f06c30]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 border border-gray-250 shadow-sm flex items-center justify-center hover:bg-gray-100 active:scale-95 transition-all duration-200"
+                  aria-label="Next testimonial"
+                >
+                  <svg className="w-5 h-5 text-[#f06c30]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              <div className="flex items-center justify-center mt-8 gap-2">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      activeIndex === index ? 'bg-[#f06c30] w-6' : 'bg-gray-300'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
 
-            {/* Desktop/Tablet Layout (Staggered Zig-Zag 2 Columns) */}
+            {/* Desktop Layout (Staggered Zig-Zag 2 Columns) - Hidden on Mobile */}
             <div className="hidden md:grid grid-cols-2 gap-8 items-start">
-              {/* Left Column of Cards */}
               <div className="flex flex-col gap-16">
                 <TestimonialCard item={testimonials[0]} />
                 <TestimonialCard item={testimonials[2]} />
               </div>
-              {/* Right Column of Cards (shifted downward) */}
               <div className="flex flex-col gap-16 md:pt-32 lg:pt-48">
                 <TestimonialCard item={testimonials[1]} />
                 <TestimonialCard item={testimonials[3]} />

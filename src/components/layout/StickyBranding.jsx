@@ -3,15 +3,15 @@ import brandingImg from '../../assets/images/homepage/Penta Freight Home/imgi_2_
 
 export default function StickyBranding() {
   return (
-    <a 
-      href="/" 
-      className="fixed left-0 top-[40%] z-[999] block focus:outline-none transition-transform duration-300 hover:scale-[1.02]"
+    <a
+      href="/"
+      className="fixed left-0 top-[40%] z-[999] block focus:outline-none transition-transform duration-300 hover:scale-[1.02] -translate-y-5"
       aria-label="Penta Freight Home"
     >
-      <img 
-        src={brandingImg} 
-        alt="Penta Freight" 
-        className="w-[42px] h-[280px] object-contain"
+      <img
+        src={brandingImg}
+        alt="Penta Freight"
+        className="w-[28px] h-[200px] md:w-[37px] md:h-[280px] object-contain"
       />
     </a>
   );

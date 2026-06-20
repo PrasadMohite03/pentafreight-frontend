@@ -3,8 +3,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useNavigate } from 'react-router-dom';
 
-// Assets
 import pentaVideo from '../assets/videos/pentakulvid-Cg-CExBI.mp4';
 import pelicanLogo from '../assets/images/pentakuhl/Penta Freight PentaKuhl/imgi_3_peli_logo_vertical_full_color-BSk9BalL.png';
 import coolguardPcm from '../assets/images/pentakuhl/Penta Freight PentaKuhl/imgi_4_coolguardpcmlogo-CtHYIIUo.png';
@@ -94,21 +94,19 @@ const faqData = [
 ];
 
 export default function Pentakuhl() {
+  const navigate = useNavigate();
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const leftContentRef = useRef(null);
   const rightContentRef = useRef(null);
 
-  // Marquee Refs
   const marqueeSectionRef = useRef(null);
   const marqueeRow1Ref = useRef(null);
   const marqueeRow2Ref = useRef(null);
 
-  // CTA Refs
   const ctaBgRef = useRef(null);
   const ctaTextRef = useRef(null);
 
-  // State
   const [activeSeries, setActiveSeries] = useState(seriesData[0].id);
   const [openIndices, setOpenIndices] = useState([0, 1, 2, 3]);
   const faqRefs = useRef([]);
@@ -246,7 +244,6 @@ export default function Pentakuhl() {
       {/* ── 1. Hero Video Banner ─────────────────────────────────────── */}
       <section className="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-gray-900 border-b border-gray-800">
         
-        {/* Background Video */}
         <video 
           autoPlay 
           loop 
@@ -257,10 +254,8 @@ export default function Pentakuhl() {
           <source src={pentaVideo} type="video/mp4" />
         </video>
         
-        {/* Dark Overlay for readability (0.45 opacity) */}
         <div className="absolute inset-0 bg-black/45 z-10"></div>
 
-        {/* Hero Content */}
         <div className="relative z-20 w-full max-w-6xl mx-auto px-6 md:px-12 flex flex-col items-center text-center mt-12">
           
           <h1 
@@ -270,14 +265,12 @@ export default function Pentakuhl() {
             Ensuring Safe Transport for <br className="hidden md:block"/> Temperature-Sensitive Products
           </h1>
 
-          {/* Divider Line */}
           <div 
             className="w-full max-w-[900px] h-[1px] bg-white/40 mb-8"
             data-aos="fade-up"
             data-aos-delay="150"
           ></div>
 
-          {/* Sub Row */}
           <div 
             className="flex flex-col md:flex-row items-center justify-between w-full max-w-[900px] gap-6"
             data-aos="fade-up"
@@ -303,7 +296,6 @@ export default function Pentakuhl() {
         <div className="w-full max-w-[1300px] mx-auto px-6 md:px-12">
           <div className="flex flex-col md:flex-row gap-12 md:gap-20 items-start justify-center">
             
-            {/* Left Column (Title) */}
             <div className="w-full md:w-[30%] flex flex-col items-center md:items-end pr-0 md:pr-10 pt-2">
               <div className="flex flex-col items-center text-center">
                 <span className="text-[#f26d2d] font-bold text-[22px] tracking-wider inline-block border-b-[2.5px] border-[#f26d2d] pb-3 mb-3 px-8">
@@ -315,7 +307,6 @@ export default function Pentakuhl() {
               </div>
             </div>
 
-            {/* Right Column (Paragraph) */}
             <div className="w-full md:w-[65%]">
               <p 
                 className="text-[#425462] text-[20px] leading-[28px] font-light"
@@ -332,7 +323,6 @@ export default function Pentakuhl() {
       {/* ── 3. Pelican BioThermal Showcase ────────────────────────────── */}
       <section className="relative py-16 bg-[#425463] overflow-hidden">
         
-        {/* Topographic Background Image/Pattern */}
         <div 
           className="absolute inset-0 opacity-[0.08] pointer-events-none mix-blend-overlay"
           style={{
@@ -345,7 +335,6 @@ export default function Pentakuhl() {
 
         <div className="relative z-10 w-full max-w-5xl mx-auto px-6 flex flex-col items-center text-center">
           
-          {/* Logo Card */}
           <div 
             className="bg-white rounded-xl py-6 px-10 mb-8 shadow-2xl border border-gray-100"
           >
@@ -356,14 +345,12 @@ export default function Pentakuhl() {
             />
           </div>
 
-          {/* Heading */}
           <h2 
             className="text-[24px] md:text-[32px] font-normal text-white mb-10 tracking-wide"
           >
             Authorized Distributors for Pelican BioThermal™ Products
           </h2>
 
-          {/* Button */}
           <button 
             className="group relative overflow-hidden bg-[#f26d2d] text-white rounded-md font-medium text-[16px] transition-colors duration-300 hover:bg-[#a1a1aa] hover:text-gray-900 w-[160px] h-[48px]"
           >
@@ -381,14 +368,12 @@ export default function Pentakuhl() {
       {/* ── 4. Product Solutions (Pinned GSAP Animation) ────────────── */}
       <section ref={sectionRef} className="relative w-full h-screen min-h-[750px] bg-[#fbfbfb] overflow-hidden border-t border-gray-100 flex flex-col items-center justify-center">
         
-        {/* Fading Heading */}
         <h2 ref={headingRef} className="absolute z-10 text-[38px] md:text-[48px] text-gray-900 font-medium tracking-wide">
           Product Solutions
         </h2>
 
         <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 xl:px-12 flex flex-col md:flex-row justify-between items-stretch gap-8 md:gap-10 z-20 h-[600px] mt-10 pointer-events-none">
             
-            {/* Left Card: Parcel Shippers */}
             <div ref={leftCardRef} className="w-full md:w-[49%] bg-white shadow-[0_4px_30px_rgba(0,0,0,0.06)] border border-[#e5e7eb] p-10 lg:p-16 flex flex-col items-center pointer-events-auto rounded-sm">
                <div ref={leftContentRef} className="flex flex-col w-full h-full">
                   <h3 className="left-card-item text-[40px] md:text-[48px] font-normal text-gray-900 text-center mb-4 tracking-wide">Parcel Shippers</h3>
@@ -396,7 +381,6 @@ export default function Pentakuhl() {
                     We understand the unique challenges faced by parcel shippers and offer tailored solutions for seamless shipping.
                   </p>
                   
-                  {/* Rows */}
                   <div className="left-card-item flex flex-col gap-0 w-full mb-12">
                     <div className="flex items-stretch border-b border-gray-100 w-full min-h-[100px]">
                       <div className="w-[30%] flex items-center pr-4">
@@ -419,9 +403,11 @@ export default function Pentakuhl() {
                     </div>
                   </div>
 
-                  {/* Button */}
                   <div className="left-card-item flex justify-center mt-auto pb-2">
-                    <button className="group relative overflow-hidden bg-[#f26d2d] text-white rounded-md font-semibold text-[16px] md:text-[18px] transition-colors duration-300 hover:bg-[#e05a1a] hover:text-white w-[200px] h-[52px] shadow-sm">
+                    <button 
+                      onClick={() => navigate('/pentakuhl/parcel-shippers')}
+                      className="group relative overflow-hidden bg-[#f26d2d] text-white rounded-md font-semibold text-[16px] md:text-[18px] transition-colors duration-300 hover:bg-[#a1a1aa] hover:text-gray-900 w-[200px] h-[52px] shadow-sm"
+                    >
                       <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:-translate-y-full">Parcel Shippers</span>
                       <span className="absolute inset-0 flex items-center justify-center translate-y-full transition-transform duration-300 ease-in-out group-hover:translate-y-0">Let's go!</span>
                     </button>
@@ -429,7 +415,6 @@ export default function Pentakuhl() {
                </div>
             </div>
 
-            {/* Right Card: Pallet Shippers */}
             <div ref={rightCardRef} className="w-full md:w-[49%] bg-white shadow-[0_4px_30px_rgba(0,0,0,0.06)] border border-[#e5e7eb] p-10 lg:p-16 flex flex-col items-center pointer-events-auto rounded-sm">
                <div ref={rightContentRef} className="flex flex-col w-full h-full">
                   <h3 className="right-card-item text-[40px] md:text-[48px] font-normal text-gray-900 text-center mb-4 tracking-wide">Pallet Shippers</h3>
@@ -437,7 +422,6 @@ export default function Pentakuhl() {
                     We provide tailored services for pallet shippers, ensuring your cargo arrives safely and efficiently.
                   </p>
                   
-                  {/* Rows */}
                   <div className="right-card-item flex flex-col gap-0 w-full mb-12">
                     <div className="flex items-stretch border-b border-gray-100 w-full min-h-[100px]">
                       <div className="w-[30%] flex items-center pr-4">
@@ -463,9 +447,11 @@ export default function Pentakuhl() {
                     </div>
                   </div>
 
-                  {/* Button */}
                   <div className="right-card-item flex justify-center mt-auto pb-2">
-                    <button className="group relative overflow-hidden bg-[#f26d2d] text-white rounded-md font-semibold text-[16px] md:text-[18px] transition-colors duration-300 hover:bg-[#e05a1a] hover:text-white w-[200px] h-[52px] shadow-sm">
+                    <button 
+                      onClick={() => navigate('/pentakuhl/pallet-shippers')}
+                      className="group relative overflow-hidden bg-[#f26d2d] text-white rounded-md font-semibold text-[16px] md:text-[18px] transition-colors duration-300 hover:bg-[#a1a1aa] hover:text-gray-900 w-[200px] h-[52px] shadow-sm"
+                    >
                       <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:-translate-y-full">Pallet Shippers</span>
                       <span className="absolute inset-0 flex items-center justify-center translate-y-full transition-transform duration-300 ease-in-out group-hover:translate-y-0">Let's go!</span>
                     </button>
@@ -488,7 +474,6 @@ export default function Pentakuhl() {
             This guide outlines temperature-controlled packaging solutions designed for the safe transport and storage of sensitive products, like vaccines and biologics, across various thermal conditions, from refrigerated to deep-freeze.
           </p>
 
-          {/* Tabs Navigation */}
           <div className="w-full bg-white border border-gray-100 rounded-sm shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex justify-between overflow-x-auto mb-10 divide-x divide-gray-100">
             {seriesData.map((series) => (
               <button
@@ -506,7 +491,6 @@ export default function Pentakuhl() {
             ))}
           </div>
 
-          {/* Tab Content Card */}
           <div className="w-full bg-white border border-gray-100 rounded-sm shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-8 md:p-12 min-h-[180px] transition-opacity duration-500">
             <div key={activeSeriesContent.id} className="animate-fade-in flex flex-col gap-4">
               <p className="text-[16px] text-gray-800 font-normal">
@@ -580,7 +564,6 @@ export default function Pentakuhl() {
         <div className="w-full max-w-[1280px] mx-auto px-6 md:px-10 lg:px-12 xl:px-14">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start lg:items-center">
             
-            {/* Left Column — Heading (40%) */}
             <div className="w-full lg:w-[45%] lg:pr-8">
               <h2 className="text-[28px] lg:text-[40px] font-medium text-gray-900 leading-[1.2] tracking-tight mb-4 whitespace-nowrap">
                 Frequently Asked <span className="text-gray-400 font-light">Questions</span>
@@ -590,7 +573,6 @@ export default function Pentakuhl() {
               </p>
             </div>
 
-            {/* Right Column — Accordion List (55%) */}
             <div className="w-full lg:w-[55%]">
               <div className="border-t border-gray-200">
                 {faqData.map((faq, index) => (
@@ -652,7 +634,6 @@ export default function Pentakuhl() {
       {/* ── 8. CTA Banner Cinematic Parallax Section ─────────────────── */}
       <section id="cta-banner" className="relative w-full h-[280px] md:h-[360px] overflow-hidden flex items-center justify-center bg-[#111] border-t border-gray-200">
         
-        {/* Parallax Background Image */}
         <div 
           ref={ctaBgRef}
           className="absolute inset-0 w-full h-[180%] -top-[40%] pointer-events-none will-change-transform"
@@ -663,11 +644,9 @@ export default function Pentakuhl() {
             alt="Protecting What Matters Most" 
             className="w-full h-full object-cover object-center brightness-90"
           />
-          {/* Dark Overlay for premium readability */}
           <div className="absolute inset-0 bg-black/45"></div>
         </div>
 
-        {/* Floating Text Content Wrapper */}
         <div 
           ref={ctaTextRef} 
           className="relative z-10 w-full max-w-6xl mx-auto px-6 text-center flex flex-col items-center will-change-transform -mt-8"

@@ -14,23 +14,6 @@ export default function AchievementsSection() {
     if (counters.length === 0) return;
 
     const ctx = gsap.context(() => {
-      // Fade-up animation for metric items
-      gsap.fromTo('.metric-item', 
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: achievementsRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-
       // Count-up animation for numeric values
       counters.forEach((el) => {
         const targetVal = parseInt(el.getAttribute('data-target'), 10);
@@ -60,18 +43,12 @@ export default function AchievementsSection() {
     <section 
       ref={achievementsRef}
       id="achievements-section" 
-      className="relative w-full py-16 md:py-20 overflow-hidden"
-      style={{ backgroundColor: '#41515c' }}
+      className="relative w-full py-16 md:py-20 overflow-hidden bg-[#425462]"
     >
       {/* Background Line Pattern */}
       <div 
-        className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
-        style={{ 
-          backgroundImage: `url(${bgPattern})`, 
-          backgroundSize: 'cover', 
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.12] pointer-events-none z-0"
+        style={{ backgroundImage: `url(${bgPattern})` }}
         aria-hidden="true"
       />
 
@@ -79,10 +56,10 @@ export default function AchievementsSection() {
         
         {/* ── Left Column (Title & Description) ───────────────────── */}
         <div>
-          <h2 className="text-[#f06c30] text-[32px] md:text-[38px] font-semibold mb-5 tracking-wide">
+          <h2 className="text-[#FF7A3D] text-[32px] md:text-[38px] font-semibold mb-5 tracking-wide">
             Our Achievements
           </h2>
-          <p className="text-gray-300 text-[14.5px] md:text-[16px] leading-relaxed font-light max-w-md">
+          <p className="text-white text-[14.5px] md:text-[16px] leading-relaxed font-light max-w-md">
             Over 31+ years of excellence, trusted globally, delivering reliable logistics solutions with precision.
           </p>
         </div>
@@ -95,37 +72,34 @@ export default function AchievementsSection() {
             <span className="text-[54px] md:text-[68px] font-light text-white leading-none mb-3">
               <span ref={(el) => (counterRefs.current[0] = el)} data-target="7">0</span>+
             </span>
-            <span className="text-[13.5px] md:text-[15px] text-gray-300 font-medium">
+            <span className="text-[13.5px] md:text-[15px] text-white font-medium">
               Strategic Domestic Offices
             </span>
           </div>
 
-          {/* USA Global Presence */}
           <div className="metric-item flex flex-col justify-start">
             <span className="text-[54px] md:text-[68px] font-light text-white leading-none mb-3">
               USA
             </span>
-            <span className="text-[13.5px] md:text-[15px] text-gray-300 font-medium">
+            <span className="text-[13.5px] md:text-[15px] text-white font-medium">
               Global presence
             </span>
           </div>
 
-          {/* Logistics Experts */}
           <div className="metric-item flex flex-col justify-start">
             <span className="text-[54px] md:text-[68px] font-light text-white leading-none mb-3">
               <span ref={(el) => (counterRefs.current[1] = el)} data-target="200">0</span>+
             </span>
-            <span className="text-[13.5px] md:text-[15px] text-gray-300 font-medium">
+            <span className="text-[13.5px] md:text-[15px] text-white font-medium">
               Logistics Experts
             </span>
           </div>
 
-          {/* Awards & Accolades */}
           <div className="metric-item flex flex-col justify-start">
             <span className="text-[54px] md:text-[68px] font-light text-white leading-none mb-3">
               <span ref={(el) => (counterRefs.current[2] = el)} data-target="50">0</span>+
             </span>
-            <span className="text-[13.5px] md:text-[15px] text-gray-300 font-medium">
+            <span className="text-[13.5px] md:text-[15px] text-white font-medium">
               Awards & Accolades
             </span>
           </div>

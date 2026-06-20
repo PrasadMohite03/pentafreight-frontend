@@ -7,11 +7,14 @@ import 'aos/dist/aos.css';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import StickyBranding from './components/layout/StickyBranding';
+import SmoothScroll from './components/layout/SmoothScroll';
 
 // Pages
 import Home from './pages/Home';
 import Industries from './pages/Industries';
 import Pentakuhl from './pages/Pentakuhl';
+import ParcelShippers from './pages/ParcelShippers';
+import PalletShippers from './pages/PalletShippers';
 
 function App() {
   useEffect(() => {
@@ -24,20 +27,24 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col bg-white text-gray-900">
-        <Navbar />
-        <StickyBranding />
-        
-        <main className="flex-grow flex flex-col">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/industries" element={<Industries />} />
-            <Route path="/pentakuhl" element={<Pentakuhl />} />
-          </Routes>
-        </main>
+      <SmoothScroll>
+        <div className="min-h-screen flex flex-col bg-white text-gray-900">
+          <Navbar />
+          <StickyBranding />
+          
+          <main className="flex-grow flex flex-col">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/industries" element={<Industries />} />
+              <Route path="/pentakuhl" element={<Pentakuhl />} />
+              <Route path="/pentakuhl/parcel-shippers" element={<ParcelShippers />} />
+              <Route path="/pentakuhl/pallet-shippers" element={<PalletShippers />} />
+            </Routes>
+          </main>
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </SmoothScroll>
     </BrowserRouter>
   );
 }

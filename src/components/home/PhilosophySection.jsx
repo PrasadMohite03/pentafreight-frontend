@@ -4,23 +4,16 @@ import bgPattern from '../../assets/images/homepage/Penta Freight Home/imgi_44_l
 export default function PhilosophySection() {
   return (
     <section 
-      className="relative w-full py-12 md:py-16 flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: '#41515c' }}
+      className="relative w-full py-12 md:py-16 flex items-center justify-center overflow-hidden bg-[#425462]"
     >
-      {/* Background Pattern */}
       <div 
-        className="absolute inset-0 w-full h-full opacity-30 pointer-events-none"
-        style={{ 
-          backgroundImage: `url(${bgPattern})`, 
-          backgroundSize: 'cover', 
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.12] pointer-events-none z-0"
+        style={{ backgroundImage: `url(${bgPattern})` }}
         aria-hidden="true"
       />
       
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center" data-aos="fade-up">
-        <h2 className="text-[#f06c30] text-[28px] md:text-[34px] font-bold mb-5 tracking-wide">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <h2 className="text-[#FF7A3D] text-[28px] md:text-[34px] font-bold mb-5 tracking-wide">
           Our Philosophy
         </h2>
         
@@ -30,8 +23,15 @@ export default function PhilosophySection() {
           excellence.
         </p>
         
-        <button className="bg-[#f06c30] hover:bg-[#d95e26] text-white font-medium text-[14px] md:text-[15px] py-2.5 px-8 rounded-md transition-colors duration-300">
-          Read more
+        <button 
+          className="group relative overflow-hidden bg-[#f06c30] text-white rounded-md font-medium text-[14px] md:text-[15px] transition-colors duration-300 hover:bg-[#a1a1aa] hover:text-gray-900 w-[150px] h-[42px] mx-auto block"
+        >
+          <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-in-out group-hover:-translate-y-full">
+            Read more
+          </span>
+          <span className="absolute inset-0 flex items-center justify-center translate-y-full transition-transform duration-300 ease-in-out group-hover:translate-y-0">
+            Let's go!
+          </span>
         </button>
       </div>
     </section>
