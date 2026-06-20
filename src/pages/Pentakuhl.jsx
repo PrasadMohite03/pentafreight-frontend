@@ -4,6 +4,7 @@ import 'aos/dist/aos.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useNavigate } from 'react-router-dom';
+import { useLoader } from '../context/LoaderContext';
 
 import pentaVideo from '../assets/videos/pentakulvid-Cg-CExBI.mp4';
 import pelicanLogo from '../assets/images/pentakuhl/Penta Freight PentaKuhl/imgi_3_peli_logo_vertical_full_color-BSk9BalL.png';
@@ -98,6 +99,7 @@ export default function Pentakuhl() {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const leftContentRef = useRef(null);
+  const { setLoading } = useLoader();
   const rightContentRef = useRef(null);
 
   const marqueeSectionRef = useRef(null);
@@ -250,6 +252,8 @@ export default function Pentakuhl() {
           muted 
           playsInline 
           className="absolute inset-0 w-full h-full object-cover z-0"
+          onCanPlayThrough={() => setLoading(false)}
+          onLoadedData={() => setLoading(false)}
         >
           <source src={pentaVideo} type="video/mp4" />
         </video>

@@ -3,7 +3,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, Environment, Center, useProgress } from '@react-three/drei';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import PageLoader from '../components/layout/PageLoader';
 
 import OfficeLocationsSection from '../components/home/OfficeLocationsSection';
 
@@ -77,10 +76,12 @@ function AutoRotatingCredoCube() {
   );
 }
 
+import { useLoader } from '../context/LoaderContext';
+
 export default function ParcelShippers() {
   const { active } = useProgress();
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { isLoading: loading, setLoading } = useLoader();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -93,7 +94,7 @@ export default function ParcelShippers() {
     if (minTimeElapsed && !active) {
       setLoading(false);
     }
-  }, [minTimeElapsed, active]);
+  }, [minTimeElapsed, active, setLoading]);
 
   useEffect(() => {
     if (!loading) {
@@ -217,8 +218,7 @@ export default function ParcelShippers() {
 
   return (
     <>
-      <PageLoader isLoading={loading} />
-      <div className={`w-full bg-white min-h-screen font-sans pt-24 transition-opacity duration-700 ease-in-out ${loading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`w-full bg-white min-h-screen font-sans pt-24 transition-opacity duration-700 ease-in-out ${loading ? 'opacity-0' : 'opacity-100'}`}>
 
       {/* ── 1. CoolGuard PCM Section ── */}
       <section ref={section1Ref} className="relative w-full h-screen bg-[#fbfcfd] overflow-hidden flex items-center justify-center">

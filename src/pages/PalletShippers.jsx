@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import PageLoader from '../components/layout/PageLoader';
+import { useLoader } from '../context/LoaderContext';
 
 import img3 from '../assets/images/Penta Freight shipping/imgi_3_.png';
 import img4 from '../assets/images/Penta Freight shipping/imgi_4_.png';
@@ -145,7 +145,7 @@ const KeyFeatures = ({ heading, description, leftBullets, rightBullets, id }) =>
 };
 
 export default function PalletShippers() {
-  const [loading, setLoading] = useState(true);
+  const { isLoading: loading, setLoading } = useLoader();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -223,8 +223,7 @@ export default function PalletShippers() {
 
   return (
     <>
-      <PageLoader isLoading={loading} />
-      <div className={`w-full bg-white min-h-screen font-sans transition-opacity duration-700 ease-in-out ${loading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`w-full bg-white min-h-screen font-sans transition-opacity duration-700 ease-in-out ${loading ? 'opacity-0' : 'opacity-100'}`}>
       
       {/* ── Section 1: COOLPALL™ VERTOS ── */}
       <ProductShowcase 

@@ -57,12 +57,15 @@ function MuteButton({ muted, onClick }) {
 }
 
 // ── Main Hero Section ─────────────────────────────────────────────────────────
+import { useLoader } from '../../context/LoaderContext';
+
 export default function HeroSection({
   videoSrc = '/videos/hero.mp4',
   posterSrc = '',
 }) {
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(true);
+  const { setLoading } = useLoader();
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -77,6 +80,10 @@ export default function HeroSection({
       const nextSectionTop = hero.offsetTop + hero.offsetHeight;
       window.scrollTo({ top: nextSectionTop, behavior: 'smooth' });
     }
+  };
+
+  const handleVideoReady = () => {
+    setLoading(false);
   };
 
   return (
@@ -97,6 +104,8 @@ export default function HeroSection({
         playsInline
         preload="auto"
         aria-hidden="true"
+        onCanPlayThrough={handleVideoReady}
+        onLoadedData={handleVideoReady}
       />
 
       {/* ── Dark Overlay ─────────────────────────────────────────────── */}

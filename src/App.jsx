@@ -16,6 +16,8 @@ import Pentakuhl from './pages/Pentakuhl';
 import ParcelShippers from './pages/ParcelShippers';
 import PalletShippers from './pages/PalletShippers';
 
+import { LoaderProvider } from './context/LoaderContext';
+
 function App() {
   useEffect(() => {
     AOS.init({
@@ -27,7 +29,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <SmoothScroll>
+      <LoaderProvider>
+        <SmoothScroll>
         <div className="min-h-screen flex flex-col bg-white text-gray-900">
           <Navbar />
           <StickyBranding />
@@ -44,7 +47,8 @@ function App() {
 
           <Footer />
         </div>
-      </SmoothScroll>
+        </SmoothScroll>
+      </LoaderProvider>
     </BrowserRouter>
   );
 }

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
  * Shows a full-screen loader with a smooth rotating orange broken-circle spinner
  * and a pulsing description text, then fades out smoothly once loading completes.
  */
-export default function PageLoader({ isLoading, onExited }) {
+export default function PageLoader({ isLoading, onExited, text = "Crafting Your Experience... Please Hold On!" }) {
   const [visible, setVisible] = useState(true);
   const [shouldRender, setShouldRender] = useState(true);
 
@@ -36,7 +36,7 @@ export default function PageLoader({ isLoading, onExited }) {
       <div className="w-16 h-16 border-[5px] border-t-[#f06c30] border-b-[#f06c30] border-l-transparent border-r-transparent rounded-full animate-spin mb-8" />
       
       <p className="font-sans text-[16px] md:text-[18px] font-medium text-gray-700 tracking-wide text-center px-6 animate-pulse select-none">
-        Crafting Your 3D Experience... Please Hold On!
+        {text}
       </p>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLoader } from '../context/LoaderContext';
 
 import icon3 from '../assets/images/industries/Penta Freight Industry/imgi_3_default.png';
 import icon4 from '../assets/images/industries/Penta Freight Industry/imgi_4_default.png';
@@ -105,6 +106,19 @@ const IndustryCard = ({ item }) => (
 );
 
 export default function Industries() {
+  const containerRef = useRef(null);
+  const leftColRef = useRef(null);
+  const rightColRef = useRef(null);
+  const { setLoading } = useLoader();
+
+  useEffect(() => {
+    // Clear loader since Industries has no heavy video assets
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [setLoading]);
+
   const sectionRef = useRef(null);
   const titleWrapperRef = useRef(null);
   const titleHeadingRef = useRef(null);
