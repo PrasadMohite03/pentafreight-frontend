@@ -156,29 +156,10 @@ export default function Navbar() {
               </Link>
             </li>
 
-            <li className="relative" ref={servicesRef}>
-              <button
-                className={`${getLinkClass(false)} flex items-center gap-1 bg-transparent border-0 cursor-pointer p-0`}
-                onMouseEnter={() => setServicesOpen(true)}
-                onMouseLeave={() => setServicesOpen(false)}
-                onClick={() => setServicesOpen((o) => !o)}
-                aria-haspopup="true"
-                aria-expanded={servicesOpen}
-              >
+            <li>
+              <Link to="/#services-section" className={getLinkClass(location.pathname === '/' && location.hash === '#services-section')}>
                 Services
-                <svg
-                  className={`w-3 h-3 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`}
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div
-                onMouseEnter={() => setServicesOpen(true)}
-                onMouseLeave={() => setServicesOpen(false)}
-              >
-                <DropdownMenu items={SERVICES_ITEMS} isOpen={servicesOpen} />
-              </div>
+              </Link>
             </li>
 
             {/* PENTAKUHL (dropdown, special branding) */}
@@ -322,29 +303,9 @@ export default function Navbar() {
             </li>
 
             <li>
-              <button
-                className="w-full flex items-center justify-between px-6 py-4 text-[15px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors"
-                onClick={() => setMobileServicesOpen((o) => !o)}
-              >
+              <Link to="/#services-section" className="flex items-center px-6 py-4 text-[15px] font-semibold uppercase tracking-wide text-gray-800 hover:text-[#f06c30] transition-colors">
                 Services
-                <svg
-                  className={`w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-90' : ''}`}
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-              {mobileServicesOpen && (
-                <ul className="bg-gray-50 border-t border-gray-100">
-                  {SERVICES_ITEMS.map((item) => (
-                    <li key={item.label}>
-                      <Link to={item.href} className="block px-10 py-3 text-[13px] text-gray-700 hover:text-[#f06c30] transition-colors">
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              </Link>
             </li>
 
             {/* PentaKÜHL with sub-menu */}
