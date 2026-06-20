@@ -309,22 +309,29 @@ export default function Navbar() {
             </li>
 
             {/* PentaKÜHL with sub-menu */}
-            <li>
-              <button
-                className="w-full flex items-center justify-between px-6 py-4 transition-colors hover:text-[#f06c30]"
-                onClick={() => setMobilePentakuhlOpen((o) => !o)}
-              >
-                <span className="flex items-baseline gap-0">
-                  <span className="text-[15px] font-semibold uppercase tracking-wide text-gray-800">Penta</span>
-                  <span className="text-[15px] font-semibold uppercase tracking-wide text-[#00bcd4]">KÜHL</span>
-                </span>
-                <svg
-                  className={`w-4 h-4 transition-transform duration-200 text-gray-800 ${mobilePentakuhlOpen ? 'rotate-90' : ''}`}
-                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+            <li className="flex flex-col">
+              <div className="w-full flex items-center justify-between pl-6 pr-4">
+                <Link
+                  to="/pentakuhl"
+                  className="flex-1 flex items-baseline gap-0 py-4 transition-colors group"
+                  onClick={() => setMobileOpen(false)}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+                  <span className="text-[15px] font-semibold uppercase tracking-wide text-gray-800 group-hover:text-[#f06c30] transition-colors">Penta</span>
+                  <span className="text-[15px] font-semibold uppercase tracking-wide text-[#00bcd4] group-hover:text-[#f06c30] transition-colors">KÜHL</span>
+                </Link>
+                <button
+                  className="p-4 transition-colors"
+                  onClick={() => setMobilePentakuhlOpen((o) => !o)}
+                  aria-label="Toggle PentaKÜHL menu"
+                >
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 text-gray-800 ${mobilePentakuhlOpen ? 'rotate-90' : ''}`}
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
               {mobilePentakuhlOpen && (
                 <ul className="bg-gray-50 border-t border-gray-100">
                   {PENTAKUHL_ITEMS.map((item) => (
