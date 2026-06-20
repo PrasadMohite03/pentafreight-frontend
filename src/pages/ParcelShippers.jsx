@@ -10,12 +10,12 @@ import OfficeLocationsSection from '../components/home/OfficeLocationsSection';
 gsap.registerPlugin(ScrollTrigger);
 
 // Preload models for better performance
-useGLTF.preload('/src/assets/images/Models/credocube.glb');
-useGLTF.preload('/src/assets/images/Models/coolguardadvancebox.glb');
+useGLTF.preload('/models/credocube.glb');
+useGLTF.preload('/models/coolguardadvancebox.glb');
 
 // 3D Model Component 1
 function CredoCubeModel({ animState }) {
-  const { scene } = useGLTF('/src/assets/images/Models/credocube.glb');
+  const { scene } = useGLTF('/models/credocube.glb');
   const groupRef = useRef();
 
   useFrame(() => {
@@ -37,7 +37,7 @@ function CredoCubeModel({ animState }) {
 
 // 3D Model Component 2
 function CoolGuardAdvanceModel({ animState }) {
-  const { scene } = useGLTF('/src/assets/images/Models/coolguardadvancebox.glb');
+  const { scene } = useGLTF('/models/coolguardadvancebox.glb');
   const groupRef = useRef();
 
   useFrame(() => {
@@ -59,7 +59,7 @@ function CoolGuardAdvanceModel({ animState }) {
 
 // Auto-Rotating 3D Model Component for Key Features Section
 function AutoRotatingCredoCube() {
-  const { scene } = useGLTF('/src/assets/images/Models/credocube.glb');
+  const { scene } = useGLTF('/models/credocube.glb');
   const groupRef = useRef();
 
   useFrame(() => {
