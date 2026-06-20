@@ -32,14 +32,13 @@ export default function AboutSection() {
         src={fadeImg}
         alt=""
         aria-hidden="true"
-        className="absolute top-0 left-0 w-full select-none pointer-events-none z-[2] opacity-60"
-        style={{ height: '45%', objectFit: 'fill', objectPosition: 'top' }}
+        className="absolute top-0 left-0 w-full select-none pointer-events-none z-[2] opacity-60 h-[65%] md:h-[45%]"
+        style={{ objectFit: 'fill', objectPosition: 'top' }}
       />
       <div 
-        className="absolute top-0 left-0 w-full select-none pointer-events-none z-[3]"
+        className="absolute top-0 left-0 w-full select-none pointer-events-none z-[3] h-[80%] md:h-[50%]"
         style={{ 
-          height: '50%', 
-          background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.95) 25%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0) 100%)' 
+          background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.95) 40%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0) 100%)' 
         }}
       />
 
